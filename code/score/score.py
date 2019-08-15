@@ -19,4 +19,4 @@ def run(raw_data):
     # y_hat = np.argmax(model.predict(data), axis=1)
     response = model.predict(data)
 
-    return list(response)
+    return response.tolist()
