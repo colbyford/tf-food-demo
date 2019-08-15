@@ -1,11 +1,17 @@
 from typing import Tuple
 
 import tensorflow as tf
-from tensorflow.keras.applications import InceptionV3
-from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.applications.inception_v3 import InceptionV3, preprocess_input
+from tensorflow.keras.optimizers import RMSprop, Adam, Adagrad, Adadelta
 
+OPTIMIZERS = {
+    'adam': Adam,
+    'rmsprop': RMSprop,
+    'adagrad': Adagrad,
+    'adadelta': Adadelta
+}
 
-def create_model(lr, classes=1, target_size:Tuple[int, int]=(150, 150)):
+def create_model(lr, classes=1, optimizer_name='rmsprop', target_size:Tuple[int, int]=(150, 150)):
     """Generate TensorFlow Model Object"""
     model = tf.keras.models.Sequential([
         tf.keras.layers.Conv2D(
@@ -29,12 +35,12 @@ def create_model(lr, classes=1, target_size:Tuple[int, int]=(150, 150)):
     ])
 
     model.compile(loss="categorical_crossentropy",
-                  optimizer=RMSprop(lr=lr),
+                  optimizer=OPTIMIZERS[optimizer_name](lr=lr),
                   metrics=["acc"])
 
     return model
 
-def load_transfer_model(lr, target_size:Tuple[int, int]=(150, 150)):
+def load_transfer_model(lr, classes=1, optimizer=RMSprop, target_size:Tuple[int, int]=(150, 150)):
 
     base_model = InceptionV3(input_shape=(*target_size, 3),
                              include_top=False,

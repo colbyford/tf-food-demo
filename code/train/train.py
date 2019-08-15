@@ -1,4 +1,6 @@
 import os
+import inspect
+import sys
 
 import click
 import matplotlib.pyplot as plt
@@ -7,8 +9,11 @@ import seaborn as sns
 import tensorflow as tf
 from azureml.core import Run
 from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# Append the current file path to the system PATH to allow the system to find the submodules
+current_file_path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+sys.path.append(current_file_path)
 
 from aml_callback import AzureMLCallback
 from data_prep import create_dataset_generators
@@ -23,13 +28,21 @@ from model import create_model
               help="The number of images in each minibatch",)
 @click.option("-l", "--learning-rate", "lr", default=1e-3, type=float,
               help="The learning rate for the algorithm")
-def train(data_dir, epochs, batch_size, lr):
+@click.option("-o", "--optimizer", type=click.Choice(['adadelta', 'rmsprop', 'adagrad', 'adam']), default='adadelta',
+              help='The optimizer to use for training the model')
+@click.argument("categories", nargs=-1, type=str)
+def train(data_dir, epochs, batch_size, lr, optimizer, categories):
     """Train the neural network"""
     run = Run.get_context()
 
+    run.log('optimizer', optimizer)
+    run.log('minibatch_size', batch_size)
+    run.log('learning_rate', lr)
+    run.log('categories', categories)
+
     # Get model and data objects
     train_generator, validation_generator = create_dataset_generators(
-        data_dir, batch_size
+        data_dir, batch_size, categories
     )
     
     model = create_model(lr=lr, classes=train_generator.num_classes)

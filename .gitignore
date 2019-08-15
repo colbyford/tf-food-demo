@@ -162,3 +162,4 @@ environ
 *.hdf5
 outputs
 .vscode
+code/train/copy_parallel.py

@@ -4,7 +4,7 @@ from typing import Tuple
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
-def create_dataset_generators(data_dir, batch_size, target_size:Tuple[int, int]=(150, 150)):
+def create_dataset_generators(data_dir, batch_size, classes=None, target_size:Tuple[int, int]=(150, 150)):
     """Create the Keras image dataset generators"""
     train_dir = os.path.join(data_dir, "train")
     validation_dir = os.path.join(data_dir, "validation")
@@ -34,6 +34,7 @@ def create_dataset_generators(data_dir, batch_size, target_size:Tuple[int, int]=
         target_size=target_size,  # All images will be resized to the target_size
         batch_size=batch_size,
         class_mode="categorical",
+        classes=classes
     )
 
     # Flow validation images in batches of batch_size using test_datagen generator
@@ -42,6 +43,7 @@ def create_dataset_generators(data_dir, batch_size, target_size:Tuple[int, int]=
         target_size=target_size,
         batch_size=batch_size,
         class_mode="categorical",
+        classes=classes
     )
 
     return train_generator, validation_generator
