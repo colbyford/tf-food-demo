@@ -20,7 +20,7 @@ from data_prep import create_dataset_generators
 from model import create_model
 
 @click.command()
-@click.option("--data-dir", default=os.environ.get("AZUREML_DATAREFERENCE_catvsdog"),
+@click.option("--data-dir", type=str, default=os.environ.get("AZUREML_DATAREFERENCE_food_images"),
               help="The directory where the data is stored.",)
 @click.option("-e", "--epochs", default=5, type=int,
               help="The number of epochs to train the neural network")
@@ -28,7 +28,7 @@ from model import create_model
               help="The number of images in each minibatch",)
 @click.option("-l", "--learning-rate", "lr", default=1e-3, type=float,
               help="The learning rate for the algorithm")
-@click.option("-o", "--optimizer", type=click.Choice(['adadelta', 'rmsprop', 'adagrad', 'adam']), default='adadelta',
+@click.option("-o", "--optimizer", type=click.Choice(['adadelta', 'rmsprop', 'adagrad', 'adam']), default='rmsprop',
               help='The optimizer to use for training the model')
 @click.argument("categories", nargs=-1, type=str)
 def train(data_dir, epochs, batch_size, lr, optimizer, categories):
@@ -45,7 +45,8 @@ def train(data_dir, epochs, batch_size, lr, optimizer, categories):
         data_dir, batch_size, categories
     )
     
-    model = create_model(lr=lr, classes=train_generator.num_classes)
+    model = create_model(lr=lr, classes=train_generator.num_classes, optimizer_name=optimizer)
+    print(model.optimizer)
     
     os.makedirs("./outputs", exist_ok=True)
 
