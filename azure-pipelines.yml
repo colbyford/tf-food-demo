@@ -17,10 +17,12 @@ steps:
     addToPath: true
     architecture: 'x64'
   displayName: "Set Python Version 3.6.x"
+
 - task: CmdLine@2
   inputs:
     script: 'pip install azureml-sdk click azure-cli-core'
   displayName: 'Install Python Dependencies for Agent'
+
 - task: AzureCLI@1
   name: install_cli
   inputs:
@@ -29,6 +31,7 @@ steps:
     useGlobalConfig: true
     inlineScript: 'az extension add -n azure-cli-ml'
   displayName: 'Install az ml cli'
+
 - task: AzureCLI@1
   name: attach_folder
   inputs:

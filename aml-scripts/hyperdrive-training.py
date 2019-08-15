@@ -47,7 +47,7 @@ def main(epochs, iterations, compute_target, concurrent_runs):
     param_sampler = RandomParameterSampling(
         {
             '--minibatch-size': choice(16, 32, 64),
-            '--learning-rate': loguniform(-6, -4),
+            '--learning-rate': loguniform(-9, -6),
             '--optimizer': choice('rmsprop', 'adagrad', 'adam')
         }
     )
@@ -65,8 +65,10 @@ def main(epochs, iterations, compute_target, concurrent_runs):
                                           max_concurrent_runs=concurrent_runs)
 
     # Submit the Hyperdrive Run
+    print("Submitting Hyperdrive Run")
     hd_run = experiment.submit(hyper_drive_config)
-    hd_run.wait_for_completion(raise_on_error=True)
+    hd_run.wait_for_completion(raise_on_error=True, show_output=True)
+    print("Finishing Run")
     best_run = hd_run.get_best_run_by_primary_metric()
     print(f'##vso[task.setvariable variable=run_id]{best_run.id}')
 

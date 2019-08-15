@@ -31,7 +31,7 @@ def create_model(lr, classes=1, optimizer_name='rmsprop', target_size:Tuple[int,
         # Flattened prediction image
         tf.keras.layers.Flatten(),
         tf.keras.layers.Dense(512, activation="relu"),
-        tf.keras.layers.Dense(classes, activation="sigmoid"),
+        tf.keras.layers.Dense(classes, activation="softmax"),
     ])
 
     model.compile(loss="categorical_crossentropy",
