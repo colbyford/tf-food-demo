@@ -1,5 +1,6 @@
-import os
 import inspect
+import json
+import os
 import sys
 
 import click
@@ -14,6 +15,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # Append the current file path to the system PATH to allow the system to find the submodules
 current_file_path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 sys.path.append(current_file_path)
+
 
 from aml_callback import AzureMLCallback
 from data_prep import create_dataset_generators
@@ -49,6 +51,9 @@ def train(data_dir, epochs, batch_size, lr, optimizer, categories):
     print(model.optimizer)
     
     os.makedirs("./outputs", exist_ok=True)
+
+    with open('./outputs/labels.json', 'w') as fo:
+        json.dump(train_generator.class_indices, fo)
 
     aml_callback = AzureMLCallback(run)
     checkpointer = ModelCheckpoint(

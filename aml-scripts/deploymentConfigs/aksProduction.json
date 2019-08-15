@@ -1,0 +1,7 @@
+{
+    "computeType": "aks",
+    "containerResourceRequirements": {
+        "cpu": 1,
+        "memoryInGB": 1
+    }
+}
