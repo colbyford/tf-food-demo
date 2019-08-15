@@ -15,7 +15,7 @@ dependencies:
   - seaborn
   - azureml-defaults
   - tensorflow-gpu==1.13.1
-  - horovod==0.16.1
+  # - horovod==0.16.1
 - pillow
 - pandas
 channels:
