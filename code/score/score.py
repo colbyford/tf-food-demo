@@ -17,4 +17,6 @@ def run(raw_data):
     data = np.array(json.loads(raw_data)['image'])
     # make prediction
     # y_hat = np.argmax(model.predict(data), axis=1)
-    return model.predict(data)
+    response = model.predict(data)
+
+    return list(response)
