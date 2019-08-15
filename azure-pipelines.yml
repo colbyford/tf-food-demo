@@ -19,7 +19,7 @@ steps:
   displayName: "Set Python Version 3.6.x"
 - task: CmdLine@2
   inputs:
-    script: 'pip install azureml-sdk click'
+    script: 'pip install azureml-sdk click azure-cli-core'
   displayName: 'Install Python Dependencies for Agent'
 - task: AzureCLI@1
   name: install_cli
