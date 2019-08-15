@@ -4,8 +4,14 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
-
+  branches:
+    include:
+      - master
+  paths:
+    include:
+    - code/train/*
+    - aml-scripts/hyperdrive-training.py
+    - aml-scripts/register-best-model.py
 pool:
   vmImage: 'ubuntu-latest'
 
