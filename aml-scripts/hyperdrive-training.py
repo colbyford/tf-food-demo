@@ -11,7 +11,7 @@ from azureml.train.hyperdrive import (BanditPolicy, HyperDriveConfig,
 @click.command()
 @click.option("--epochs", type=int, default=10)
 @click.option("--iterations", type=int, default=10)
-@click.option("--ct", "--compute_target", type=str, default='gpu-cluster')
+@click.option("--ct", "--compute-target", "compute_target", type=str, default='gpu-cluster')
 @click.option("--concurrent-runs", type=int, default=5)
 def main(epochs, iterations, compute_target, concurrent_runs):
     cli_auth = AzureCliAuthentication()
