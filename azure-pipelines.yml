@@ -10,10 +10,33 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.6.x'
+    addToPath: true
+    architecture: 'x64'
+- task: CmdLine@2
+  inputs:
+    script: 'pip install azureml-sdk'
+
+- task: AzureCLI@1
+  inputs:
+    azureSubscription: 'GMI-Demo-Workspace'
+    scriptLocation: 'inlineScript'
+    useGlobalConfig: true
+    inlineScript: 'az extension add -n azure-cli-ml'
+
+- task: AzureCLI@1
+  inputs:
+    azureSubscription: 'GMI-Demo-Workspace'
+    scriptLocation: 'inlineScript'
+    useGlobalConfig: true
+    inlineScript: 'az ml folder attach -w $AML_WORKSPACE_NAME -g $AML_RESOURCE_GROUP -e AML_EXPERIMENT_NAME'
+
+- task: AzureCLI@1
+  inputs:
+    azureSubscription: 'GMI-Demo-Workspace'
+    scriptLocation: 'inlineScript'
+    useGlobalConfig: true
+    inlineScript: 'python ./aml-scripts/hyperdrive-training.py --iterations $HD_ITERATIONS --epochs $HD_EPOCHS'
