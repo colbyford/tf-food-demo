@@ -4,5 +4,6 @@
         "cpu": 1,
         "memoryInGB": 1
     },
-    "auth_enabled": true
+    "auth_enabled": true,
+    "enable_app_insights": true
 }
