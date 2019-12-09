@@ -32,7 +32,7 @@ steps:
 - task: AzureCLI@1
   name: install_cli
   inputs:
-    azureSubscription: 'food-ml-connection'
+    azureSubscription: 'GMI-Demo-Workspace'
     scriptLocation: 'inlineScript'
     useGlobalConfig: true
     inlineScript: 'az extension add -n azure-cli-ml'
@@ -41,7 +41,7 @@ steps:
 - task: AzureCLI@1
   name: attach_folder
   inputs:
-    azureSubscription: 'food-ml-connection'
+    azureSubscription: 'GMI-Demo-Workspace'
     scriptLocation: 'inlineScript'
     useGlobalConfig: true
     inlineScript: 'az ml folder attach -w $AML_WORKSPACE_NAME -g $AML_RESOURCE_GROUP -e $AML_EXPERIMENT_NAME'
@@ -50,7 +50,7 @@ steps:
 - task: AzureCLI@1
   name: hyperdrive_run
   inputs:
-    azureSubscription: 'food-ml-connection'
+    azureSubscription: 'GMI-Demo-Workspace'
     scriptLocation: 'inlineScript'
     useGlobalConfig: true
     inlineScript: 'python ./aml-scripts/hyperdrive-training.py --iterations $HD_ITERATIONS --epochs $HD_EPOCHS'
@@ -59,7 +59,7 @@ steps:
 - task: AzureCLI@1
   name: register_model
   inputs:
-    azureSubscription: 'food-ml-connection'
+    azureSubscription: 'GMI-Demo-Workspace'
     scriptLocation: 'inlineScript'
     useGlobalConfig: true
     inlineScript: 'python ./aml-scripts/register-best-model.py --model-name $AML_MODEL_NAME --run-id $RUN_ID'
